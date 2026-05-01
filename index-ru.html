@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EverBiohacking</title>
+    <link rel="icon" href="assets/logo-favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header class="header">
+        <a href="index-ru.html" class="header__logo"><img src="assets/logo.svg" alt="EverBiohacking" class="header__logo-img"></a>
+        <div class="header__actions">
+            <a href="index.html" class="button button--outline">
+                <img src="assets/globe.svg" alt="" class="button__icon" aria-hidden="true">English
+            </a>
+            <a href="https://ko-fi.com/telitsyn" class="button button--solid" target="_blank" rel="noopener noreferrer">
+                <img src="assets/coins-hand.svg" alt="" class="button__icon" aria-hidden="true">Помощь автору
+            </a>
+        </div>
+        <button class="burger" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="drawer">
+            <a href="index.html" class="button button--outline">
+                <img src="assets/globe.svg" alt="" class="button__icon" aria-hidden="true">English
+            </a>
+            <a href="https://ko-fi.com/telitsyn" class="button button--solid" target="_blank" rel="noopener noreferrer">
+                <img src="assets/coins-hand.svg" alt="" class="button__icon" aria-hidden="true">Помощь автору
+            </a>
+        </div>
+
+        <div class="overlay"></div>
+
+    </header>
+
+    <main class="main">
+        <h1 class="main__title">Научно обоснованное руководство к лучшей версии себя</h1>
+
+        <div class="cards-grid">
+            <a href="sleep-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/sleep-sm.png" alt="Иллюстрация спящего человека" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Сон</h2>
+            </a>
+
+            <a href="physical-activity-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/physical-activity-sm.png" alt="Иллюстрация бегущего человека" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Физическая активность</h2>
+            </a>
+
+            <a href="nutrition-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/nutrition-sm.png" alt="Иллюстрация готовящего человека" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Питание</h2>
+            </a>
+
+            <a href="mental-health-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/mental-health-sm.png" alt="Иллюстрация медитирующего человека" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Ментальное здоровье</h2>
+            </a>
+
+            <a href="cognitive-optimization-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/cognitive-optimization-sm.png" alt="Иллюстрация работающего человека" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Умственные способности</h2>
+            </a>
+
+            <a href="tracking-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/tracking-sm.png" alt="Иллюстрация человека, сдающего кровь" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Трекинг</h2>
+            </a>
+
+            <a href="supplements-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/supplements-sm.png" alt="Иллюстрация человека, который пьёт добавки" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Добавки</h2>
+            </a>
+
+            <a href="longevity-ru.html" class="card">
+                <div class="card__image-wrap">
+                    <img src="assets/longevity-sm.png" alt="Иллюстрация человека, который сажает растение" class="card__image" loading="lazy">
+                </div>
+                <h2 class="card__title">Долголетие и омоложение</h2>
+            </a>
+        </div>
+    </main>
+
+    <script>
+    const burger = document.querySelector('.burger');
+    const drawer = document.querySelector('.drawer');
+    const overlay = document.querySelector('.overlay');
+
+    burger.addEventListener('click', () => {
+        const isOpen = drawer.classList.toggle('drawer--open');
+        burger.classList.toggle('burger--active');
+        if (isOpen) {
+            overlay.classList.add('overlay--active');
+        } else {
+            overlay.classList.remove('overlay--active');
+        }
+    });
+
+
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('drawer--open');
+        overlay.classList.remove('overlay--active');
+        burger.classList.remove('burger--active');
+    });
+</script>
+
+
+</body>
+</html>

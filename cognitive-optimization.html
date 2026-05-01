@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive optimization - EverBiohacking</title>
+    <link rel="icon" href="assets/logo-favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="header__logo"><img src="assets/logo.svg" alt="EverBiohacking" class="header__logo-img"></a>
+        <div class="header__actions">
+            <a href="cognitive-optimization-ru.html" class="button button--outline">
+                <img src="assets/globe.svg" alt="" class="button__icon" aria-hidden="true">Русский язык
+            </a>
+            <a href="https://ko-fi.com/telitsyn" class="button button--solid" target="_blank" rel="noopener noreferrer">
+                <img src="assets/coins-hand.svg" alt="" class="button__icon" aria-hidden="true">Support author
+            </a>
+        </div>
+        <button class="burger" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="drawer">
+            <a href="cognitive-optimization-ru.html" class="button button--outline">
+                <img src="assets/globe.svg" alt="" class="button__icon" aria-hidden="true">Русский язык
+            </a>
+            <a href="https://ko-fi.com/telitsyn" class="button button--solid" target="_blank" rel="noopener noreferrer">
+                <img src="assets/coins-hand.svg" alt="" class="button__icon" aria-hidden="true">Support author
+            </a>
+        </div>
+
+        <div class="overlay"></div>
+
+    </header>
+
+    </header>
+
+    <div class="layout">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol class="breadcrumbs__list">
+                <li class="breadcrumbs__item">
+                     <a href="index.html" class="breadcrumbs__link">Home</a>
+                </li>
+                <li class="breadcrumbs__item">
+                     <span class="breadcrumbs__current" aria-current="page">Cognitive optimization</span>
+                </li>
+            </ol>
+        </nav>
+
+
+        <div class="layout__body">
+            <aside class="sidebar">
+                <nav class="side-menu" aria-label="Section navigation">
+                    <ul class="side-menu__list">
+                        <li class="side-menu__item">
+                            <a href="sleep.html" class="side-menu__link">Sleep</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="physical-activity.html" class="side-menu__link">Physical activity</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="nutrition.html" class="side-menu__link">Nutrition</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="mental-health.html" class="side-menu__link">Mental health</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="cognitive-optimization.html" class="side-menu__link side-menu__link--active" aria-current="page">Cognitive optimization</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="tracking.html" class="side-menu__link">Tracking</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="supplements.html" class="side-menu__link">Supplements</a>
+                        </li>
+                        <li class="side-menu__item">
+                            <a href="longevity.html" class="side-menu__link">Longevity</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="article">
+            <h1 class="article__title">Cognitive optimization</h1>
+            
+            <img src="assets/cognitive-optimization-md.png" alt="Illustration of a person working at a desk" class="article__hero-image">
+            
+            <div class="article__content">
+                <p><strong>Goal:</strong> To enhance learning capacity and specific cognitive metrics, such as processing speed, memory, focus, and others.</p>
+                
+                <h2>Learning</h2>
+                <p>Study complex systems: languages, mathematics, physics, programming, or music. It is crucial, however, to have a genuine interest in these subjects; do not force yourself.</p>
+                
+                <h2>Application of Knowledge</h2>
+                <p>Knowledge that is not applied is simply forgotten—this is an unavoidable fact. Practice languages, apply mathematics to real-life scenarios, and solve life's challenges using your accumulated knowledge.</p>
+                
+                <h2>The Grind</h2>
+                <p>Beyond innate talent and luck, what distinguishes a genius from an outsider is the amount of deliberate practice. The "grind" is the great equalizer. It is the opportunity to surpass anyone in any field. General intelligence and cognitive abilities are sharpened only through consistent, hard work.</p>
+
+                <h2>Supplements</h2>
+                <p>My preferred supplements:</p>
+                <ul>
+                    <li><strong>Lion’s Mane (micelio):</strong> Stimulates Nerve Growth Factor (NGF) and enhances learning.</li>
+                    <li><strong>Bacopa Monnieri:</strong> Improves synaptic transmission and memory while promoting neuronal growth. It enhances learning capacity.</li>
+                    <li><strong>Citicoline:</strong> A precursor to acetylcholine that strengthens neuronal membranes and boosts the brain's energy potential.</li>
+                    <li><strong>Caffeine + L-Theanine:</strong> A classic combination to achieve a state of "calm alertness," where theanine neutralizes caffeine-induced anxiety while maintaining focus.</li>
+                </ul>
+            </div>
+            </main>
+        </div>
+
+    </div>
+
+    <script>
+    const burger = document.querySelector('.burger');
+    const drawer = document.querySelector('.drawer');
+    const overlay = document.querySelector('.overlay');
+
+    burger.addEventListener('click', () => {
+        const isOpen = drawer.classList.toggle('drawer--open');
+        burger.classList.toggle('burger--active');
+        if (isOpen) {
+            overlay.classList.add('overlay--active');
+        } else {
+            overlay.classList.remove('overlay--active');
+        }
+    });
+
+
+    overlay.addEventListener('click', () => {
+        drawer.classList.remove('drawer--open');
+        overlay.classList.remove('overlay--active');
+        burger.classList.remove('burger--active');
+    });
+    </script>
+
+</body>
+</html>
