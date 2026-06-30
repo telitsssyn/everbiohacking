@@ -43,8 +43,6 @@ export function ArticleHeader({ article }: { article: Article }) {
             <div className="text-white">Pavel Telitsyn</div>
             <div className="text-white/50 flex items-center gap-1.5">
               <span>{formatDate(article.date, locale)}</span>
-              <span>&middot;</span>
-              <span>{t("articleMeta", { minutes: article.readingTime })}</span>
             </div>
           </div>
         </div>
