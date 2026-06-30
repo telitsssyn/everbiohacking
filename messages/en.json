@@ -1,0 +1,180 @@
+{
+  "site": {
+    "name": "EverBiohacking",
+    "tagline": "Live longer. Think clearer. Feel better.",
+    "description": "Science-backed articles and videos on the systems that shape your life — sleep, nutrition, energy, mental health, cognition and longevity."
+  },
+  "nav": {
+    "main": "Main",
+    "articlesAndVideos": "Articles & Videos",
+    "about": "About",
+    "author": "Author",
+    "support": "Support",
+    "search": "Search",
+    "searchPlaceholder": "Search articles…",
+    "searchNoResults": "No results found",
+    "searchClose": "Close"
+  },
+  "home": {
+    "ctaGetStarted": "Get Started",
+    "aboutKicker": "About",
+    "aboutHeading": "Hi, I'm Pavel — founder of EverBiohacking.",
+    "aboutBody": "I've been deep in biohacking since 2016 — more than ten years of self-experimentation, tracking my own biomarkers, and reading primary research. I'm a developer, not a doctor, and I've spent the last decade testing what actually moves the needle for energy, cognition, and longevity.",
+    "aboutBody2": "EverBiohacking is what I wish existed when I started — science-backed and grounded in primary research.",
+    "aboutBody3": "It's a lifelong project. New articles go up when I have something worth saying.",
+    "aboutSignature": "— Pavel",
+    "readFullStory": "Read the full story",
+    "forBeginners": "For Beginners",
+    "moreArticles": "More articles",
+    "recentArticles": "Recent Articles",
+    "topics": "Topics",
+    "moreTopics": "More topics"
+  },
+  "articles": {
+    "title": "Articles & Videos",
+    "topics": "Topics",
+    "tabs": {
+      "mostRecent": "Most Recent",
+      "mostPopular": "Most Popular",
+      "articlesOnly": "Articles Only",
+      "videosOnly": "Videos Only"
+    },
+    "allArticles": "All Articles",
+    "minutesRead": "{count, plural, one {# min read} other {# min read}}",
+    "articleMeta": "Article: {minutes} minutes to read",
+    "videoMeta": "Video: {minutes} minutes to watch",
+    "by": "by",
+    "share": "Share",
+    "copied": "Link copied!"
+  },
+  "sections": {
+    "basics": "For Beginners",
+    "sleep": "Sleep",
+    "nutrition": "Nutrition",
+    "activity": "Activity",
+    "cognition": "Cognition",
+    "mental-health": "Mental Health",
+    "hormones": "Hormones",
+    "supplements": "Supplements",
+    "tracking": "Tracking",
+    "longevity": "Longevity & Rejuvenation",
+    "looks": "Looks & Appearance"
+  },
+  "sectionDescriptions": {
+    "basics": "Where to start, core concepts and principles",
+    "sleep": "Circadian rhythms, recovery, deep-sleep architecture",
+    "nutrition": "Whole foods, protein, fasting, metabolic health",
+    "activity": "Strength, VO₂max, recovery, mobility",
+    "cognition": "Focus, memory, learning, brain performance",
+    "mental-health": "Stress, mood, anxiety, meditation",
+    "hormones": "Hormonal health and optimization",
+    "supplements": "What works, what's hype, dosing, stacks",
+    "tracking": "Biomarkers, wearables, self-experimentation",
+    "longevity": "Aging biology, life extension, healthspan",
+    "looks": "Skin, body composition, appearance"
+  },
+  "footer": {
+    "newsletterTitle": "New articles. No spam.",
+    "emailPlaceholder": "your@email.com",
+    "subscribe": "Subscribe",
+    "subscribed": "Thank you. You're subscribed.",
+    "invalidEmail": "Please enter a valid email.",
+    "subscribeError": "Something went wrong. Try again later.",
+    "topics": "Topics",
+    "site": "Site",
+    "connectSocial": "Connect / Social",
+    "forBeginners": "For Beginners",
+    "main": "Main",
+    "articlesAndVideos": "Articles and Videos",
+    "about": "About",
+    "support": "Support the author",
+    "disclaimerShort": "EverBiohacking is educational. I'm not a physician — nothing here is medical advice. Consult a professional before changing your regimen.",
+    "readFullDisclaimer": "Read the full disclaimer",
+    "copyright": "© 2026 EverBiohacking",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "liveLongerTagline": "Live longer. Think clearer. Feel better.",
+    "shortDescription": "Science-backed writing on sleep, nutrition, cognition, longevity. A lifelong project by Pavel."
+  },
+  "article": {
+    "disclaimer": "Disclaimer: This content is for informational purposes only. I am not a physician, and nothing below is medical advice. Consult a qualified professional before adopting any practice or supplement. Everything described is my personal experience combined with a review of available research.",
+    "back": "Back to articles",
+    "notTranslated": "This article isn't translated to English yet.",
+    "readInOther": "Read in {lang}"
+  },
+  "level": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "common": {
+    "loading": "Loading…",
+    "noArticles": "No articles yet — coming soon.",
+    "comingSoon": "Coming soon",
+    "comingSoonBody": "This page is in the works. Subscribe below to know when it launches.",
+    "minRead": "{minutes} min read",
+    "articleCount": "{count, plural, one {# article} other {# articles}}"
+  },
+  "everpass": {
+    "title": "EverPass",
+    "kicker": "Coming soon",
+    "body": "A paid subscription with a trial period — access to all articles and future deep dives. Launching after the MVP is settled."
+  },
+  "book": {
+    "title": "Buy my book",
+    "kicker": "Coming soon",
+    "body": "A full-length book distilling a decade of biohacking experiments. Will be available as a PDF when ready."
+  },
+  "about": {
+    "title": "About",
+    "heading": "About EverBiohacking",
+    "intro": "EverBiohacking is a long-form, science-backed library of writing on the systems that shape your life — sleep, nutrition, cognition, longevity. Built by Pavel, a developer who has spent more than a decade self-experimenting and reading primary research.",
+    "philosophyHeading": "Philosophy",
+    "philosophyBody": "Nothing here is medical advice. Everything is grounded in primary research and personal experience, with a bias toward what has held up under repeated experiments. The pace is slow on purpose — articles ship when something is worth saying.",
+    "contactHeading": "Stay in touch",
+    "contactBody": "Subscribe in the footer. New articles go out when they're ready — no spam, no schedule."
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Page not found.",
+    "goHome": "Go home"
+  },
+  "dosageTable": {
+    "compound": "Compound",
+    "dose": "Dose",
+    "notes": "Notes"
+  },
+  "references": {
+    "title": "References"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "heading": "Privacy Policy",
+    "intro": "EverBiohacking respects your privacy. This page explains what data we collect and how we use it.",
+    "dataHeading": "What data we collect",
+    "dataBody": "We only collect your email address if you voluntarily subscribe to our newsletter. We do not use tracking cookies and do not share data with third parties.",
+    "analyticsHeading": "Analytics",
+    "analyticsBody": "We may use anonymous analytics to understand which articles are read more often. No personal data is collected in this process.",
+    "contactHeading": "Contact",
+    "contactBody": "For privacy-related questions, email hello@everbiohacking.com."
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "heading": "Terms of Use",
+    "intro": "By using EverBiohacking, you agree to these terms.",
+    "contentHeading": "Content",
+    "contentBody": "All content on EverBiohacking is for informational and educational purposes only. Nothing on this site constitutes medical advice. The author is not liable for actions taken based on this content. Always consult a qualified professional.",
+    "copyrightHeading": "Copyright",
+    "copyrightBody": "All materials belong to EverBiohacking. Reproduction is permitted only with attribution and a link to the original.",
+    "changesHeading": "Changes",
+    "changesBody": "We reserve the right to modify these terms. The current version is always available on this page."
+  },
+  "author": {
+    "title": "About the Author",
+    "heading": "Hi, I'm Pavel — founder of EverBiohacking.",
+    "body": "I've been deep in biohacking since 2016 — more than ten years of self-experimentation, tracking my own biomarkers, and reading primary research. I'm a developer, not a doctor, and I've spent the last decade testing what actually moves the needle for energy, cognition, and longevity.",
+    "body2": "EverBiohacking is what I wish existed when I started — science-backed and grounded in primary research.",
+    "body3": "It's a lifelong project. New articles go up when I have something worth saying.",
+    "signature": "— Pavel"
+  }
+}
