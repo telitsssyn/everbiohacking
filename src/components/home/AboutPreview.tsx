@@ -10,7 +10,7 @@ export function AboutPreview() {
       <div className="grid gap-10 md:grid-cols-[1fr_1.4fr] md:items-center md:gap-14">
         <div className="relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl bg-white/[0.04]">
           <Image
-            src="/images/pavel.png"
+            src="/images/pavel.webp"
             alt="Pavel"
             fill
             sizes="(max-width: 768px) 100vw, 384px"
