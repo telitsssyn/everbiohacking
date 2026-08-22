@@ -4,6 +4,7 @@ import { DosageTable } from "./DosageTable";
 import { References, Reference } from "./References";
 import { MedicalDisclaimer } from "./MedicalDisclaimer";
 import { YouTube } from "./YouTube";
+import { ProtocolSummary } from "./ProtocolSummary";
 
 export const mdxComponents = {
   Callout,
@@ -13,6 +14,7 @@ export const mdxComponents = {
   Reference,
   MedicalDisclaimer,
   YouTube,
+  ProtocolSummary,
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2 className="mt-12 font-serif text-2xl font-medium text-white" {...props} />
   ),

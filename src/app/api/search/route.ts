@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllArticles } from "@/lib/content";
+import { getAllProtocols } from "@/lib/content";
 import type { Locale } from "@/lib/types";
 
 export async function GET(request: Request) {
@@ -11,8 +11,8 @@ export async function GET(request: Request) {
     return NextResponse.json([]);
   }
 
-  const articles = await getAllArticles(locale);
-  const results = articles
+  const protocols = await getAllProtocols(locale);
+  const results = protocols
     .filter(
       (a) =>
         a.title.toLowerCase().includes(q) ||

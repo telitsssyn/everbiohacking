@@ -7,7 +7,7 @@ interface SectionSidebarProps {
 }
 
 export function SectionSidebar({ activeSection }: SectionSidebarProps) {
-  const t = useTranslations("articles");
+  const t = useTranslations("protocols");
   const tSections = useTranslations("sections");
 
   return (
@@ -16,16 +16,16 @@ export function SectionSidebar({ activeSection }: SectionSidebarProps) {
       <ul className="mt-5 space-y-3 text-sm">
         <li>
           <Link
-            href="/articles"
+            href="/protocols"
             className={`block ${!activeSection ? "text-white" : "text-white/60 hover:text-white"}`}
           >
-            {t("allArticles")}
+            {t("allProtocols")}
           </Link>
         </li>
         {SECTIONS.map((s) => (
           <li key={s}>
             <Link
-              href={`/articles/${s}`}
+              href={`/protocols/${s}`}
               className={`block ${
                 activeSection === s ? "text-white" : "text-white/60 hover:text-white"
               }`}

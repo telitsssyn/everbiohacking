@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getBySection } from "@/lib/content";
 import { isSection, SECTIONS } from "@/lib/sections";
-import { SectionSidebar } from "@/components/articles/SectionSidebar";
-import { ArticleCard } from "@/components/articles/ArticleCard";
+import { SectionSidebar } from "@/components/protocols/SectionSidebar";
+import { ProtocolCard } from "@/components/protocols/ProtocolCard";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/lib/types";
 
@@ -21,7 +21,11 @@ export async function generateMetadata({
   const { locale, section } = await params;
   if (!isSection(section)) return {};
   const tSections = await getTranslations({ locale, namespace: "sections" });
-  return { title: tSections(section) };
+  const tDesc = await getTranslations({
+    locale,
+    namespace: "sectionDescriptions",
+  });
+  return { title: tSections(section), description: tDesc(section) };
 }
 
 export default async function SectionPage({
@@ -33,18 +37,19 @@ export default async function SectionPage({
   if (!isSection(section)) notFound();
   setRequestLocale(locale);
 
-  const articles = await getBySection(locale as Locale, section);
+  const protocols = await getBySection(locale as Locale, section);
   const tSections = await getTranslations({ locale, namespace: "sections" });
   const tDesc = await getTranslations({
     locale,
     namespace: "sectionDescriptions",
   });
   const tc = await getTranslations({ locale, namespace: "common" });
+  const t = await getTranslations({ locale, namespace: "protocols" });
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
       <div className="text-sm uppercase tracking-widest text-white/50">
-        {tSections(section)}
+        {t("title")}
       </div>
       <h1 className="mt-2 font-serif text-4xl text-white sm:text-5xl">
         {tSections(section)}
@@ -54,10 +59,10 @@ export default async function SectionPage({
       <div className="mt-10 grid gap-12 md:grid-cols-[220px_1fr]">
         <SectionSidebar activeSection={section} />
         <div className="space-y-12">
-          {articles.length === 0 ? (
-            <p className="text-sm text-white/50">{tc("noArticles")}</p>
+          {protocols.length === 0 ? (
+            <p className="text-sm text-white/50">{tc("noProtocols")}</p>
           ) : (
-            articles.map((a) => <ArticleCard key={a.slug} article={a} />)
+            protocols.map((p) => <ProtocolCard key={p.slug} protocol={p} />)
           )}
         </div>
       </div>

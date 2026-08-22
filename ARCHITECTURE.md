@@ -39,10 +39,10 @@
 /                                  → redirect → /en (по Accept-Language)
 /en                                → главная (EN)
 /ru                                → главная (RU)
-/en/articles                       → Articles & Videos (список + фильтры)
-/ru/articles                       → то же на RU
-/en/articles/[section]             → лента по рубрике (например /en/articles/sleep)
-/en/articles/[section]/[slug]      → страница статьи или видео
+/en/protocols                      → каталог протоколов (список + фильтры)
+/ru/protocols                      → то же на RU
+/en/protocols/[section]            → лента по рубрике (например /en/protocols/sleep)
+/en/protocols/[section]/[slug]     → страница протокола
 /en/about                          → О проекте/авторе
 /en/everpass                       → заглушка "coming soon"
 /en/book                           → заглушка "coming soon"
@@ -52,7 +52,18 @@
 **Замечания:**
 - Локаль — первый сегмент URL. Всё ниже идёт через `[locale]` динамический сегмент группы.
 - Slug рубрик (`section`) одинаковый для обеих локалей (`sleep`, `nutrition`...), чтобы не плодить переводы slug'ов на старте. Названия рубрик локализуются через словарь.
-- Slug статьи `[slug]` — может различаться между языками (статья на EN и её перевод на RU имеют разные slug'и). Парный перевод связан полем `translationKey` (см. §4).
+- Slug протокола `[slug]` — может различаться между языками (протокол на EN и его перевод на RU имеют разные slug'и). Парный перевод связан полем `translationKey` (см. §4).
+- **Slug протокола постоянный.** Он не содержит год, версию и «v2»: смысл модели в том, что один URL живёт годами и копит вес, а меняется содержимое. Год в slug'е (`my-supplement-stack-2026`) — наследие статейной модели и подлежит переименованию.
+- `section` остаётся в пути. Это стоит того: 10 рубричных посадочных страниц дают охват запросов, которого плоский `/protocols/[slug]` не даёт. Цена — смена рубрики требует редиректа.
+
+**Легаси-редиректы** (`next.config.ts`, 301):
+
+```
+/:locale(en|ru)/articles          → /:locale/protocols
+/:locale(en|ru)/articles/:path*   → /:locale/protocols/:path*
+```
+
+Непрефиксный `/articles/...` не редиректится напрямую: сначала next-intl middleware подставляет локаль посетителя, дальше срабатывают правила выше. Лишний хоп в обмен на правильный язык.
 
 ---
 
@@ -75,7 +86,7 @@ EverBiohacking/
 ├── public/
 │   ├── logo.svg
 │   ├── favicon.ico
-│   ├── images/                    # hero, иллюстрации статей
+│   ├── images/                    # hero, иллюстрации протоколов
 │   └── og/                        # Open Graph картинки
 │
 ├── content/                       # ВЕСЬ контент здесь — MDX в git
@@ -106,11 +117,11 @@ EverBiohacking/
 │   │   ├── [locale]/
 │   │   │   ├── layout.tsx         # Header + Footer + Providers
 │   │   │   ├── page.tsx           # Главная
-│   │   │   ├── articles/
-│   │   │   │   ├── page.tsx       # Список всего
+│   │   │   ├── protocols/
+│   │   │   │   ├── page.tsx       # Каталог протоколов
 │   │   │   │   └── [section]/
 │   │   │   │       ├── page.tsx           # Лента рубрики
-│   │   │   │       └── [slug]/page.tsx    # Страница статьи/видео
+│   │   │   │       └── [slug]/page.tsx    # Страница протокола
 │   │   │   ├── about/page.tsx
 │   │   │   ├── everpass/page.tsx          # заглушка
 │   │   │   └── book/page.tsx              # заглушка
@@ -130,20 +141,20 @@ EverBiohacking/
 │   │   │   ├── Hero.tsx
 │   │   │   ├── AboutPreview.tsx
 │   │   │   ├── ForBeginners.tsx
-│   │   │   ├── RecentArticles.tsx
+│   │   │   ├── RecentlyUpdated.tsx
 │   │   │   └── TopicsGrid.tsx
-│   │   ├── articles/
-│   │   │   ├── ArticleCard.tsx
-│   │   │   ├── ArticleList.tsx
+│   │   ├── protocols/
+│   │   │   ├── ProtocolCard.tsx
+│   │   │   ├── ProtocolHeader.tsx         # заголовок + две даты
 │   │   │   ├── SectionSidebar.tsx
-│   │   │   ├── FilterTabs.tsx
-│   │   │   └── ArticleHeader.tsx
+│   │   │   └── FilterTabs.tsx
 │   │   ├── mdx/                   # компоненты, доступные внутри MDX
 │   │   │   ├── Callout.tsx
 │   │   │   ├── TLDR.tsx
 │   │   │   ├── DosageTable.tsx
 │   │   │   ├── References.tsx
 │   │   │   ├── MedicalDisclaimer.tsx
+│   │   │   ├── ProtocolSummary.tsx        # блок «что делать» в начале
 │   │   │   └── YouTube.tsx
 │   │   └── ui/                    # примитивы
 │   │       ├── Button.tsx
@@ -151,11 +162,11 @@ EverBiohacking/
 │   │       └── Icon.tsx
 │   │
 │   ├── lib/
-│   │   ├── content.ts             # getAllArticles, getArticleBySlug, getBySection
+│   │   ├── content.ts             # getAllProtocols, getProtocolBySlug, getBySection
 │   │   ├── mdx.ts                 # компиляция MDX, components map
 │   │   ├── sections.ts            # константа 10 рубрик + локализация
 │   │   ├── reading-time.ts        # подсчёт времени чтения
-│   │   └── types.ts               # типы Article, Section, Locale
+│   │   └── types.ts               # типы Protocol, Section, Locale
 │   │
 │   ├── i18n/
 │   │   ├── routing.ts             # настройка next-intl
@@ -165,7 +176,7 @@ EverBiohacking/
 │       └── tokens.css             # CSS-переменные (цвета, радиусы, тени)
 │
 └── scripts/
-    └── new-article.ts             # CLI: создать шаблон новой статьи (опционально)
+    └── new-protocol.ts            # CLI: создать шаблон нового протокола (опционально)
 ```
 
 ---
@@ -183,29 +194,32 @@ export type Section =
   | 'tracking' | 'longevity' | 'looks';
 
 export type Level = 'beginner' | 'intermediate' | 'advanced';
-export type ContentType = 'article' | 'video';
 
-export interface ArticleFrontmatter {
+export interface ProtocolFrontmatter {
   title: string;
   slug: string;
   lang: Locale;
   section: Section;
   topics: string[];
   level: Level;
-  type: ContentType;
-  videoUrl?: string;
-  date: string;              // ISO 8601
-  lastReviewed: string;      // ISO 8601
+
+  type: 'protocol';          // единственный тип контента
+
+  date: string;              // первая публикация, неизменна
+  updated: string;           // последняя правка — задаёт сортировку
+  lastReviewed: string;      // последняя сверка; в данных есть, в UI не выводится
+
+  videoUrl?: string;         // YouTube-разбор протокола, опционально
   excerpt: string;
   heroImage?: string;
   readingTime?: number;      // вычисляется если не задано
   draft?: boolean;
   featured?: boolean;
-  translationKey?: string;   // связывает RU/EN-перевод одной статьи
+  translationKey?: string;   // связывает RU/EN-перевод одного протокола
   access?: 'free' | 'pass';  // зарезервировано для v0.2 paywall
 }
 
-export interface Article extends ArticleFrontmatter {
+export interface Protocol extends ProtocolFrontmatter {
   content: string;           // raw MDX-исходник
   readingTime: number;       // всегда заполнен после обработки
 }
@@ -213,7 +227,11 @@ export interface Article extends ArticleFrontmatter {
 
 **Парсинг и валидация:** при чтении MDX-файла фронтматтер проходит через Zod-схему — это даёт нам runtime-валидацию и автоматические типы. Опечатка в `section` или невалидная дата ломают сборку, а не показываются на проде.
 
-**`translationKey`** — общий идентификатор для пары статей-переводов. Кнопка переключения языка на странице статьи может вести на парную локаль, если перевод существует.
+**`translationKey`** — общий идентификатор для пары протоколов-переводов. Кнопка переключения языка на странице протокола может вести на парную локаль, если перевод существует.
+
+**Разрешение дат при чтении.** `updated` и `lastReviewed` необязательны во frontmatter и достраиваются в `readProtocol`: `updated ?? lastReviewed ?? date`, затем `lastReviewed ?? updated`. Это позволяет старым файлам оставаться валидными и не заставляет проставлять даты вручную на каждом новом протоколе. На странице выводятся только `updated` и `date`.
+
+**Сортировка по умолчанию — `updated desc`, не `date desc`.** Протокол попадает наверх списка за то, что он актуален, а не за то, что он новый. Это единственное место, где модель протоколов расходится со статейной на уровне данных, и именно оно определяет поведение главной, каталога и рубрик.
 
 ---
 
@@ -229,11 +247,12 @@ content/en/sleep/how-i-optimized.mdx
     Zod-схема (валидация)
         │
         ▼
-    Article object ──► кеш на время билда (lib/content.ts)
+    Protocol object ──► кеш на время билда (lib/content.ts)
         │
-        ├──► getAllArticles(locale) — для главной/листинга
+        ├──► getAllProtocols(locale) — каталог, отсортирован по updated
         ├──► getBySection(locale, section)
-        ├──► getArticleBySlug(locale, section, slug)
+        ├──► getProtocolBySlug(locale, section, slug)
+        ├──► getRecentlyUpdated(locale, limit) — блок на главной
         │
         ▼
   React Server Component ──► рендер ──► ISR
@@ -247,8 +266,9 @@ content/en/sleep/how-i-optimized.mdx
 
 - **Стратегия URL:** `prefix` для обеих локалей (`/en/...`, `/ru/...`). Корень `/` редиректит на язык по `Accept-Language`.
 - **Сегменты URL:** локализуются названия рубрик в UI, но slug в URL остаётся канонический (`sleep` и для RU и для EN). Это упрощает MVP; локализованные URL-сегменты можно добавить позже без миграции данных.
-- **Контент:** не machine translation — каждая статья пишется/правится вручную на каждом языке. Если перевода нет, статья показывается только в своей локали.
-- **Fallback:** если пользователь зашёл на `/ru/articles/sleep/some-slug`, а этого перевода нет — 404 с кнопкой «прочитать на EN», если EN-версия есть.
+- **Контент:** не machine translation — каждый протокол пишется/правится вручную на каждом языке. Если перевода нет, протокол показывается только в своей локали.
+- **Fallback:** если пользователь зашёл на `/ru/protocols/sleep/some-slug`, а этого перевода нет — 404 с кнопкой «прочитать на EN», если EN-версия есть.
+- **Следствие модели:** правка протокола на одном языке оставляет вторую локаль устаревшей молча. Пары RU/EN нужно править вместе, иначе обещание актуальности выполняется только наполовину.
 
 ---
 
@@ -258,7 +278,8 @@ content/en/sleep/how-i-optimized.mdx
 - **OG-картинки:** статичные `/og/...` или динамические через `opengraph-image.tsx` (Edge runtime, satori).
 - **Sitemap.xml** — генерируется автоматически (`app/sitemap.ts`).
 - **Robots.txt** — `app/robots.ts`.
-- **Структурированные данные:** JSON-LD типа `Article` на страницах статей, `Person` для About.
+- **Структурированные данные:** JSON-LD типа `Article` на страницах протоколов (с `dateModified` = `updated`), `Person` для About.
+- **`article:modified_time`** проставляется из `updated` в `generateMetadata` страницы протокола: для краулера у протокола значима дата последнего изменения, а не первой публикации.
 
 ---
 
@@ -278,7 +299,7 @@ content/en/sleep/how-i-optimized.mdx
 1. **Шрифты:** Roboto Serif (заголовки) + Inter (тело). Подключение через `next/font/google` в `app/[locale]/layout.tsx`, оба self-hosted с `display: 'swap'`.
 2. **i18n-библиотека:** `next-intl`.
 3. **Структура `content/`:** локали → рубрики → файлы (`content/{locale}/{section}/{slug}.mdx`).
-4. **slug рубрик в URL:** канонические, одинаковые для обеих локалей (`/ru/articles/sleep`, `/en/articles/sleep`). Названия локализуются только в UI через словарь.
+4. **slug рубрик в URL:** канонические, одинаковые для обеих локалей (`/ru/protocols/sleep`, `/en/protocols/sleep`). Названия локализуются только в UI через словарь.
 5. **Логотип:** предоставлен — `public/logo.svg` (комбинированный знак + ворд-марк, чёрный квадрат с осветлённой типографикой).
 7. **`translationKey`:** включаем в схему сразу, но необязательное поле. Можно проставлять, когда появятся первые пары переводов.
 
@@ -291,7 +312,7 @@ content/en/sleep/how-i-optimized.mdx
 3. Базовый layout (Header / Footer) по макетам — лого из `public/logo.svg`, шрифты Roboto Serif + Inter.
 4. i18n-роутинг через next-intl с локалями `en`, `ru` и `defaultLocale: 'en'`.
 5. Заглушки всех страниц с правильными маршрутами и метаданными.
-6. Одна пробная MDX-статья на EN и RU, чтобы прогнать весь пайплайн (frontmatter → Zod → рендер).
+6. Один пробный MDX-протокол на EN и RU, чтобы прогнать весь пайплайн (frontmatter → Zod → рендер).
 7. `.env.local.example` с ключами KV (`KV_REST_API_URL`, `KV_REST_API_TOKEN`).
 8. Деплой на Vercel под временный домен.
 

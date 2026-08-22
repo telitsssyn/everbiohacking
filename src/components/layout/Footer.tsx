@@ -38,7 +38,7 @@ export function Footer() {
               {topicSlugs.map((s) => (
                 <li key={s}>
                   <Link
-                    href={`/articles/${s}`}
+                    href={`/protocols/${s}`}
                     className="hover:text-white"
                   >
                     {tSections(s)}
@@ -58,8 +58,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/articles" className="hover:text-white">
-                  {t("articlesAndVideos")}
+                <Link href="/protocols" className="hover:text-white">
+                  {t("protocols")}
                 </Link>
               </li>
               <li>

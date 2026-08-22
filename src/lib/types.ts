@@ -16,20 +16,24 @@ export const SECTIONS = [
 
 export type Section = (typeof SECTIONS)[number];
 
-
-export type ContentType = "article" | "video";
-
-export interface ArticleFrontmatter {
+export interface ProtocolFrontmatter {
   title: string;
   slug: string;
   lang: Locale;
   section: Section;
   topics: string[];
 
-  type: ContentType;
-  videoUrl?: string;
+  type: "protocol";
+
+  /** First published. Never changes. */
   date: string;
+  /** Last time the protocol itself changed. Drives the default sort. */
+  updated: string;
+  /** Last time it was verified as still current. Kept in the data, not shown. */
   lastReviewed: string;
+
+  /** Companion video. A protocol is the document; video is a channel for it. */
+  videoUrl?: string;
   excerpt: string;
   heroImage?: string;
   readingTime?: number;
@@ -39,7 +43,7 @@ export interface ArticleFrontmatter {
   access?: "free" | "pass";
 }
 
-export interface Article extends ArticleFrontmatter {
+export interface Protocol extends ProtocolFrontmatter {
   content: string;
   readingTime: number;
 }

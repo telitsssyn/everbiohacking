@@ -1,23 +1,22 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import type { Article, Locale } from "@/lib/types";
+import type { Locale, Protocol } from "@/lib/types";
 import { formatDate } from "@/lib/formatDate";
 
-export function ArticleCard({ article }: { article: Article }) {
+export function ProtocolCard({ protocol }: { protocol: Protocol }) {
   const locale = useLocale() as Locale;
-  const t = useTranslations("articles");
-  const metaKey = article.type === "video" ? "videoMeta" : "articleMeta";
+  const t = useTranslations("protocols");
   return (
     <Link
-      href={`/articles/${article.section}/${article.slug}`}
+      href={`/protocols/${protocol.section}/${protocol.slug}`}
       className="group block"
     >
-      {article.heroImage && (
+      {protocol.heroImage && (
         <div className="relative aspect-[21/9] w-full overflow-hidden rounded-xl bg-white/[0.04]">
           <Image
-            src={article.heroImage}
-            alt={article.title}
+            src={protocol.heroImage}
+            alt={protocol.title}
             fill
             quality={100}
             sizes="100vw"
@@ -26,13 +25,14 @@ export function ArticleCard({ article }: { article: Article }) {
         </div>
       )}
       <h3 className="mt-4 font-serif text-2xl text-white group-hover:text-white/90">
-        {article.title}
+        {protocol.title}
       </h3>
       <div className="mt-2 text-sm text-white/50">
-        {formatDate(article.date, locale)} · {t(metaKey, { minutes: article.readingTime })}
+        {t("updatedOn", { date: formatDate(protocol.updated, locale) })} ·{" "}
+        {t("meta", { minutes: protocol.readingTime })}
       </div>
       <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/70">
-        {article.excerpt}
+        {protocol.excerpt}
       </p>
     </Link>
   );

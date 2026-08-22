@@ -3,7 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { z } from "zod";
 import { SECTIONS } from "./types";
-import type { Article, Locale } from "./types";
+import type { Locale, Protocol } from "./types";
 import { calculateReadingTime } from "./reading-time";
 
 const dateField = z.union([
@@ -18,10 +18,14 @@ const FrontmatterSchema = z.object({
   section: z.enum(SECTIONS),
   topics: z.array(z.string()).default([]),
 
-  type: z.enum(["article", "video"]).default("article"),
-  videoUrl: z.string().url().optional(),
+  type: z.literal("protocol").default("protocol"),
+
   date: dateField,
-  lastReviewed: dateField,
+  // Both fall back to `date` when absent — see resolution below.
+  updated: dateField.optional(),
+  lastReviewed: dateField.optional(),
+
+  videoUrl: z.string().url().optional(),
   excerpt: z.string().min(1),
   heroImage: z.string().optional(),
   readingTime: z.number().int().positive().optional(),
@@ -57,7 +61,12 @@ async function walkMdx(dir: string): Promise<string[]> {
   return out;
 }
 
-async function readArticle(filePath: string): Promise<Article | null> {
+/** Newest first. */
+function byDateDesc(a: string, b: string): number {
+  return a < b ? 1 : a > b ? -1 : 0;
+}
+
+async function readProtocol(filePath: string): Promise<Protocol | null> {
   const raw = await fs.readFile(filePath, "utf8");
   const { data, content } = matter(raw);
   const parsed = FrontmatterSchema.safeParse(data);
@@ -67,67 +76,82 @@ async function readArticle(filePath: string): Promise<Article | null> {
   }
   const fm = parsed.data;
   if (fm.draft) return null;
+
+  // A protocol always has all three dates; older files only carry some of them.
+  const updated = fm.updated ?? fm.lastReviewed ?? fm.date;
+  const lastReviewed = fm.lastReviewed ?? updated;
+
   return {
     ...fm,
+    updated,
+    lastReviewed,
     content,
     readingTime: fm.readingTime ?? calculateReadingTime(content),
   };
 }
 
-async function loadLocale(locale: Locale): Promise<Article[]> {
+async function loadLocale(locale: Locale): Promise<Protocol[]> {
   const files = await walkMdx(path.join(CONTENT_ROOT, locale));
-  const articles: Article[] = [];
+  const protocols: Protocol[] = [];
   for (const file of files) {
-    const article = await readArticle(file);
-    if (article) articles.push(article);
+    const protocol = await readProtocol(file);
+    if (protocol) protocols.push(protocol);
   }
-  articles.sort((a, b) => (a.date < b.date ? 1 : -1));
-  return articles;
+  // Default order is by last change, not by publication — a protocol earns its
+  // place in the list by being current, not by being new.
+  protocols.sort(
+    (a, b) => byDateDesc(a.updated, b.updated) || byDateDesc(a.date, b.date),
+  );
+  return protocols;
 }
 
-export async function getAllArticles(locale: Locale): Promise<Article[]> {
+export async function getAllProtocols(locale: Locale): Promise<Protocol[]> {
   return loadLocale(locale);
 }
 
 export async function getBySection(
   locale: Locale,
   section: string,
-): Promise<Article[]> {
-  const list = await getAllArticles(locale);
-  return list.filter((a) => a.section === section);
+): Promise<Protocol[]> {
+  const list = await getAllProtocols(locale);
+  return list.filter((p) => p.section === section);
 }
 
-export async function getArticleBySlug(
+export async function getProtocolBySlug(
   locale: Locale,
   section: string,
   slug: string,
-): Promise<Article | null> {
-  const list = await getAllArticles(locale);
-  return list.find((a) => a.section === section && a.slug === slug) ?? null;
+): Promise<Protocol | null> {
+  const list = await getAllProtocols(locale);
+  return list.find((p) => p.section === section && p.slug === slug) ?? null;
 }
 
 export async function getFeatured(
   locale: Locale,
   limit = 3,
-): Promise<Article[]> {
-  const list = await getAllArticles(locale);
-  const featured = list.filter((a) => a.featured);
-  const fallback = list.filter((a) => !a.featured);
+): Promise<Protocol[]> {
+  const list = await getAllProtocols(locale);
+  const featured = list.filter((p) => p.featured);
+  const fallback = list.filter((p) => !p.featured);
   return [...featured, ...fallback].slice(0, limit);
 }
 
-export async function getRecent(locale: Locale, limit = 3): Promise<Article[]> {
-  const list = await getAllArticles(locale);
+/** Most recently changed protocols — the home page "what moved" slot. */
+export async function getRecentlyUpdated(
+  locale: Locale,
+  limit = 3,
+): Promise<Protocol[]> {
+  const list = await getAllProtocols(locale);
   return list.slice(0, limit);
 }
 
 export async function getSectionCounts(
   locale: Locale,
 ): Promise<Record<string, number>> {
-  const list = await getAllArticles(locale);
+  const list = await getAllProtocols(locale);
   const counts: Record<string, number> = {};
-  for (const a of list) {
-    counts[a.section] = (counts[a.section] ?? 0) + 1;
+  for (const p of list) {
+    counts[p.section] = (counts[p.section] ?? 0) + 1;
   }
   return counts;
 }
@@ -137,16 +161,20 @@ export async function getMappedSlug(
   targetLocale: Locale,
   section: string,
 ): Promise<string | null> {
-  // Find the article in the source locale by checking the other locale
+  // Find the protocol in the source locale by checking the other locale
   const sourceLocale = targetLocale === "en" ? "ru" : "en";
-  const sourceArticle = await getArticleBySlug(sourceLocale, section, originalSlug);
-  
-  if (sourceArticle && sourceArticle.translationKey) {
-    const targetArticles = await getBySection(targetLocale, section);
-    const targetArticle = targetArticles.find(
-      (a) => a.translationKey === sourceArticle.translationKey
+  const sourceProtocol = await getProtocolBySlug(
+    sourceLocale,
+    section,
+    originalSlug,
+  );
+
+  if (sourceProtocol && sourceProtocol.translationKey) {
+    const targetProtocols = await getBySection(targetLocale, section);
+    const targetProtocol = targetProtocols.find(
+      (p) => p.translationKey === sourceProtocol.translationKey,
     );
-    return targetArticle ? targetArticle.slug : null;
+    return targetProtocol ? targetProtocol.slug : null;
   }
   return null;
 }

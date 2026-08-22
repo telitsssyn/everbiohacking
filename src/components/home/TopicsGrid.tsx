@@ -47,7 +47,7 @@ export function TopicsGrid({ counts }: TopicsGridProps) {
           {t("topics")}
         </h2>
         <Link
-          href="/articles"
+          href="/protocols"
           className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"
         >
           {t("moreTopics")} <ArrowRight size={14} />
@@ -60,7 +60,7 @@ export function TopicsGrid({ counts }: TopicsGridProps) {
           return (
             <Link
               key={section}
-              href={`/articles/${section}`}
+              href={`/protocols/${section}`}
               className="rounded-xl border border-white/10 bg-white/[0.02] p-5 transition-colors hover:border-white/20 hover:bg-white/[0.04]"
             >
               <div className="flex items-center gap-2 text-white">
@@ -71,7 +71,7 @@ export function TopicsGrid({ counts }: TopicsGridProps) {
                 {tDesc(section)}
               </p>
               <div className="mt-4 text-xs text-white/40">
-                {tc("articleCount", { count })}
+                {tc("protocolCount", { count })}
               </div>
             </Link>
           );

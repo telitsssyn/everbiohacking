@@ -1,13 +1,13 @@
 import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import type { Article } from "@/lib/types";
+import type { Protocol } from "@/lib/types";
 
 interface ForBeginnersProps {
-  articles: Article[];
+  protocols: Protocol[];
 }
 
-export function ForBeginners({ articles }: ForBeginnersProps) {
+export function ForBeginners({ protocols }: ForBeginnersProps) {
   const t = useTranslations("home");
   const tc = useTranslations("common");
   return (
@@ -17,33 +17,33 @@ export function ForBeginners({ articles }: ForBeginnersProps) {
           {t("forBeginners")}
         </h2>
         <Link
-          href="/articles/basics"
+          href="/protocols/basics"
           className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"
         >
-          {t("moreArticles")} <ArrowRight size={14} />
+          {t("moreProtocols")} <ArrowRight size={14} />
         </Link>
       </div>
       <div className="mt-6 grid gap-5 md:grid-cols-3">
-        {articles.length === 0 ? (
+        {protocols.length === 0 ? (
           <PlaceholderCards />
         ) : (
-          articles.map((a, i) => (
+          protocols.map((p, i) => (
             <Link
-              key={a.slug}
-              href={`/articles/${a.section}/${a.slug}`}
+              key={p.slug}
+              href={`/protocols/${p.section}/${p.slug}`}
               className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-colors hover:border-white/20 hover:bg-white/[0.04]"
             >
               <div className="font-serif text-2xl text-white/40">
                 {String(i + 1).padStart(2, "0")}
               </div>
               <div className="mt-4 font-serif text-lg text-white">
-                {a.title}
+                {p.title}
               </div>
               <p className="mt-2 line-clamp-3 text-sm text-white/60">
-                {a.excerpt}
+                {p.excerpt}
               </p>
               <div className="mt-6 text-xs text-white/40">
-                {tc("minRead", { minutes: a.readingTime })}
+                {tc("minRead", { minutes: p.readingTime })}
               </div>
             </Link>
           ))

@@ -2,66 +2,61 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import type { Article } from "@/lib/types";
-import { ArticleCard } from "./ArticleCard";
+import type { Protocol } from "@/lib/types";
+import { ProtocolCard } from "./ProtocolCard";
 
-type Tab = "recent" | "popular" | "articles" | "videos";
+type Tab = "updated" | "popular";
 
 interface FilterTabsProps {
-  articles: Article[];
+  protocols: Protocol[];
 }
 
-export function FilterTabs({ articles }: FilterTabsProps) {
-  const t = useTranslations("articles.tabs");
+export function FilterTabs({ protocols }: FilterTabsProps) {
+  const t = useTranslations("protocols.tabs");
   const tc = useTranslations("common");
-  const [tab, setTab] = useState<Tab>("recent");
-  const [popularSlugs, setPopularSlugs] = useState<string[]>([]);
-  const [popularLoading, setPopularLoading] = useState(false);
+  const [tab, setTab] = useState<Tab>("updated");
+  // null = not fetched yet, which is also what "loading" means here.
+  const [popularSlugs, setPopularSlugs] = useState<string[] | null>(null);
+  const popularLoading = tab === "popular" && popularSlugs === null;
 
   useEffect(() => {
-    if (tab === "popular" && popularSlugs.length === 0) {
-      fetch("/api/views")
-        .then((res) => res.json())
-        .then((slugs) => setPopularSlugs(slugs))
-        .catch(() => {}) // fallback to standard sort if API fails
-        .finally(() => setPopularLoading(false));
-    }
-  }, [tab, popularSlugs.length]);
+    if (tab !== "popular" || popularSlugs !== null) return;
+    let cancelled = false;
+    fetch("/api/views")
+      .then((res) => res.json())
+      .then((slugs: string[]) => {
+        if (!cancelled) setPopularSlugs(slugs);
+      })
+      // On failure, fall back to the default order rather than spinning forever.
+      .catch(() => {
+        if (!cancelled) setPopularSlugs([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [tab, popularSlugs]);
 
-  const filtered = [...articles].filter((a) => {
-    if (tab === "articles") return a.type === "article";
-    if (tab === "videos") return a.type === "video";
-    return true;
-  });
+  const filtered = [...protocols];
 
-  if (tab === "popular" && popularSlugs.length > 0) {
+  if (tab === "popular" && popularSlugs && popularSlugs.length > 0) {
     filtered.sort((a, b) => {
       const idxA = popularSlugs.indexOf(a.slug);
       const idxB = popularSlugs.indexOf(b.slug);
       if (idxA !== -1 && idxB !== -1) return idxA - idxB;
       if (idxA !== -1) return -1;
       if (idxB !== -1) return 1;
-      return 0; // if neither is in popular list, keep original (recent) order
+      return 0; // if neither is in popular list, keep original (updated) order
     });
   }
 
   return (
     <div>
       <div className="flex flex-wrap gap-6 border-b border-white/10 pb-3 text-sm">
-        <TabButton active={tab === "recent"} onClick={() => setTab("recent")}>
-          {t("mostRecent")}
+        <TabButton active={tab === "updated"} onClick={() => setTab("updated")}>
+          {t("recentlyUpdated")}
         </TabButton>
         <TabButton active={tab === "popular"} onClick={() => setTab("popular")}>
           {t("mostPopular")}
-        </TabButton>
-        <TabButton
-          active={tab === "articles"}
-          onClick={() => setTab("articles")}
-        >
-          {t("articlesOnly")}
-        </TabButton>
-        <TabButton active={tab === "videos"} onClick={() => setTab("videos")}>
-          {t("videosOnly")}
         </TabButton>
       </div>
 
@@ -69,9 +64,9 @@ export function FilterTabs({ articles }: FilterTabsProps) {
         {popularLoading ? (
           <p className="text-sm text-white/50">{tc("loading")}</p>
         ) : filtered.length === 0 ? (
-          <p className="text-sm text-white/50">{tc("noArticles")}</p>
+          <p className="text-sm text-white/50">{tc("noProtocols")}</p>
         ) : (
-          filtered.map((a) => <ArticleCard key={a.slug} article={a} />)
+          filtered.map((p) => <ProtocolCard key={p.slug} protocol={p} />)
         )}
       </div>
     </div>

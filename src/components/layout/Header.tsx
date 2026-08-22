@@ -44,8 +44,8 @@ export function Header() {
             <Link href="/" className={getLinkClass("/")}>
               {t("main")}
             </Link>
-            <Link href="/articles" className={getLinkClass("/articles")}>
-              {t("articlesAndVideos")}
+            <Link href="/protocols" className={getLinkClass("/protocols")}>
+              {t("protocols")}
             </Link>
             <Link href="/about" className={getLinkClass("/about")}>
               {t("about")}
@@ -105,11 +105,11 @@ export function Header() {
               {t("main")}
             </Link>
             <Link
-              href="/articles"
+              href="/protocols"
               onClick={() => setMobileOpen(false)}
-              className={getMobileLinkClass("/articles")}
+              className={getMobileLinkClass("/protocols")}
             >
-              {t("articlesAndVideos")}
+              {t("protocols")}
             </Link>
             <Link
               href="/about"

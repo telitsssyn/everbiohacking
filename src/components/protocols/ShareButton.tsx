@@ -9,7 +9,7 @@ interface ShareButtonProps {
 }
 
 export function ShareButton({ title }: ShareButtonProps) {
-  const t = useTranslations("articles");
+  const t = useTranslations("protocols");
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {

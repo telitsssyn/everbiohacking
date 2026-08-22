@@ -69,7 +69,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
 
   const navigate = (result: SearchResult) => {
     onClose();
-    router.push(`/articles/${result.section}/${result.slug}`);
+    router.push(`/protocols/${result.section}/${result.slug}`);
   };
 
   useEffect(() => {
